@@ -19,6 +19,21 @@
 
 ----
 
+响应结果：
+```
+{
+    "msg": "Success",
+    "data": {
+        "access_token": "09cce11d21c1b08318b216d693be725d",
+        "expires_in": 259200,
+        "refresh_token": "a89e3c3db5214cc1a2472aa843c09c1a",
+        "openid": "cfa0ac2506c442d9bf93cad95f695344",
+        "scope": "*"
+    },
+    "code": "0"
+}
+```
+
 ##### 2.刷新 access_token
 请求方法：`/oauth/refresh_token`
 
@@ -31,10 +46,21 @@
 | appid | String | 是 | appid |
 | refresh_token | String | 是 | 接口1返回参数 |
 | grant_type | String | 是 | 填写：refresh_token |
-
-
 ----
-
+响应结果：
+```
+{
+    "msg": "Success",
+    "data": {
+        "access_token": "09cce11d21c1b08318b216d693be725d",
+        "expires_in": 259200,
+        "refresh_token": "a89e3c3db5214cc1a2472aa843c09c1a",
+        "openid": "cfa0ac2506c442d9bf93cad95f695344",
+        "scope": "*"
+    },
+    "code": "0"
+}
+```
 ##### 3.请求用户信息
 请求方法：`/openapi/userinfo`
 
@@ -48,6 +74,21 @@
 | openid | String | 是 | 用户openid |
 
 ----
+响应结果：
+```
+{
+    "msg": "Success",
+    "data": {
+        "openid": "cfa0ac2506c442d9bf93cad95f695344",
+        "nickname": "Apollo",
+        "photo": "https://img.wchat.im/header/4128c3bdd4f941fe9f1ca0d5587ca967.jpg",
+        "sex": "0",
+        "grade": "0",
+        "inviteCode": "758440"
+    },
+    "code": "0"
+}
+```
 
 ##### 4.获取邀请信息
 请求方法：`/openapi/bindinfo`
@@ -63,6 +104,16 @@
 | openid | String | 是 | 用户openid |
 
 ----
+响应结果：
+```
+{
+    "msg": "Success",
+    "data": {
+        "openid": "a8d9af26d52d4190aab06e129879130e" //邀请人openid
+    },
+    "code": "0"
+}
+```
 
 ##### 5.获取用户币种余额
 请求方法：`/openapi/balance`
@@ -77,6 +128,25 @@
 | access_token | String | 是 | 用户access_token |
 | openid | String | 是 | 用户openid |
 
+响应结果：
+```
+{
+    "msg": "Success",
+    "data": {
+        "cid": 20,
+        "name": "EOS",
+        "code": "EOS",
+        "img": "https://wsr.oss-ap-southeast-1.aliyuncs.com/coins/ceos.png",
+        "precision": 4,
+        "contract": "eosio.token",
+        "quantity": 0,
+        "freeze": 0,
+        "usdprice": "4.6619",
+        "rmbprice": "32.6333"
+    },
+    "code": "0"
+}
+```
 
   
 
