@@ -161,7 +161,10 @@
 ---
 | 参数 | 类型 | 是否必填 | 参数说明 |
 |:-------------:|:-------------|:-------------|:-------------|
-| CT-Signature | String | 是 | CT-Nonce CT-Timestamp 拼接后hexSHA1加密，header参数传递 |
+| CT-Appid | String | 是 | 商户appid,header参数传递 |
+| CT-Timestamp | String | 是 | 时间戳，header参数传递 |
+| CT-Nonce | String | 是 | 随机数字串，header参数传递 |
+| CT-Signature | String | 是 | 加密串，header参数传递，参考下边加密方式 |
 | reciver | String | 是 | 收款者openid |
 | info | String | 是 | 转账信息 |
 | quantity | String | 是 | 转账金额 |
@@ -169,6 +172,15 @@
 | cid | String | 是 | 币种id |
 
 ----
+
+CT-Signature 签名方式：
+
+```hexSHA1(商户appid+CT-Nonce+CT-Timestamp)```
+
+响应结果
+```
+{"msg":"Success","data":"b_f5afd80f3ec44b15ab4ec860a43cc903","code":"0"}
+```
 
 ##### 2.预下单
 请求方法：`/mch/pay/order`
@@ -179,7 +191,10 @@
 ---
 | 参数 | 类型 | 是否必填 | 参数说明 |
 |:-------------:|:-------------|:-------------|:-------------|
-| CT-Signature | String | 是 | CT-Nonce CT-Timestamp 拼接后hexSHA1加密，header参数传递 |
+| CT-Appid | String | 是 | 商户appid,header参数传递 |
+| CT-Timestamp | String | 是 | 时间戳，header参数传递 |
+| CT-Nonce | String | 是 | 随机数字串，header参数传递 |
+| CT-Signature | String | 是 | 加密串，header参数传递，参考下边加密方式 |
 | out_order_id | String | 是 | 订单id |
 | notify_url | String | 是 | 支付后端回调地址 |
 | openid | String | 是 | 下单用户openid |
@@ -191,13 +206,93 @@
 | trade_type | String | 是 | 支付类型：CAPP |
 | ip | String | 是 | 支付终端ip |
 
-##### 3.商户余额查询
+CT-Signature 签名方式：
+
+```hexSHA1(商户appid+CT-Nonce+CT-Timestamp)```
+
+响应结果：
+```
+{
+    "msg":"Success",
+    "data":{
+        "appid":"10233425",
+        "mchid":"10244444",
+        "nonce_str":"288d79fbf89b4e1eb5d47996117b1d21Dw2WcxH0",
+        "sign":"70f4d2fad7f19bdcfedb6eb86b457dc0750baef9",
+        "trade_type":"CAPP",
+        "prepay_id":"21725138311446528"
+    },
+    "code":"0"
+}
+```
+
+预下单完成之后，服务端完成再次验签，验签方式
+
+```String 本地签名串 = hexSHA1(商户id+预下单返回nonce_str+商户加密串)```
+
+与预下单返回sign比较，相同则验签正确，通过则认为是有效订单，服务端重新生成返回参数：
+`timestamp（自主生成）` `nonce(自主生成)` `orderid（预下单返回的prepay_id）` `paySign（预下单返回的sign）` 返回客户付支付
+
+##### 3.下单回调
+请求方法：`客户服务端的回调地址`
+
+请求方式：`POST`
+
+请求参数： 
+
+| 参数 | 类型 | 是否必填 | 参数说明 |
+|:-------------:|:-------------|:-------------|:-------------|
+| nonceStr | String | 是 | 随机串 |
+| signature | String | 是 | 签名串 |
+| out_order_id | String | 是 | 订单id |
+| status | String | 是 | 状态，不等于"0"为成功 |
+
+signature需要验签，验签方式
+
+```String 本地签名串 = hexSHA1(商户id+nonceStr(回调参数)+商户加密串)```
+
+与回调参数signature比较，相同则验签正确，后边判断状态，进行业务处理
+
+
+
+##### 4.商户余额查询
 请求方法：`/mch/balance`
 
 请求方式：`POST`
 
-请求参数： 暂时未用到，待补充
+请求参数：
+ 
+| 参数 | 类型 | 是否必填 | 参数说明 |
+|:-------------:|:-------------|:-------------|:-------------|
+| CT-Appid | String | 是 | 商户appid,header参数传递 |
+| CT-Timestamp | String | 是 | 时间戳，header参数传递 |
+| CT-Nonce | String | 是 | 随机数字串，header参数传递 |
+| CT-Signature | String | 是 | 加密串，header参数传递，参考下边加密方式 |
+| cid | String | 是 | 币种id |
 
+CT-Signature 签名方式：
+
+```hexSHA1(商户appid+CT-Nonce+CT-Timestamp)```
+
+响应结果：
+```
+{
+    "msg":"Success",
+    "data":{
+        "cid":55,
+        "name":"USDT",
+        "code":"USDT",
+        "img":"https://img.chattle.vip/coins/usdt.png",
+        "precision":6,
+        "contract":"0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "quantity":0.337697,
+        "freeze":0,
+        "usdprice":"1",
+        "rmbprice":"7"
+    },
+    "code":"0"
+}
+```
 
 
 ###  所有错误码
