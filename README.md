@@ -175,7 +175,7 @@
 
 CT-Signature 签名方式：
 
-```hexSHA1(商户appid+CT-Nonce+CT-Timestamp)```
+```hexSHA1(商户加密串+CT-Nonce+CT-Timestamp)```
 
 响应结果
 ```
@@ -208,7 +208,7 @@ CT-Signature 签名方式：
 
 CT-Signature 签名方式：
 
-```hexSHA1(商户appid+CT-Nonce+CT-Timestamp)```
+```hexSHA1(商户加密串+CT-Nonce+CT-Timestamp)```
 
 响应结果：
 ```
@@ -226,11 +226,7 @@ CT-Signature 签名方式：
 }
 ```
 
-预下单完成之后，服务端完成再次验签，验签方式
-
-```String 本地签名串 = hexSHA1(商户id+预下单返回nonce_str+商户加密串)```
-
-与预下单返回sign比较，相同则验签正确，通过则认为是有效订单，服务端重新生成返回参数：
+得到预下单返回结果，服务端重新生成返回参数：
 `timestamp（自主生成）` `nonce(自主生成)` `orderid（预下单返回的prepay_id）` `paySign（预下单返回的sign）` 返回客户付支付
 
 ##### 3.下单回调
@@ -249,7 +245,7 @@ CT-Signature 签名方式：
 
 signature需要验签，验签方式
 
-```String 本地签名串 = hexSHA1(商户id+nonceStr(回调参数)+商户加密串)```
+```String 本地签名串 = hexSHA1(商户id+商户加密串+nonceStr(回调参数))```
 
 与回调参数signature比较，相同则验签正确，后边判断状态，进行业务处理
 
@@ -272,7 +268,7 @@ signature需要验签，验签方式
 
 CT-Signature 签名方式：
 
-```hexSHA1(商户appid+CT-Nonce+CT-Timestamp)```
+```hexSHA1(商户加密串+CT-Nonce+CT-Timestamp)```
 
 响应结果：
 ```
