@@ -220,7 +220,11 @@ CT-Signature 签名方式：
         "nonce_str":"288d79fbf89b4e1eb5d47996117b1d21Dw2WcxH0",
         "sign":"70f4d2fad7f19bdcfedb6eb86b457dc0750baef9",
         "trade_type":"CAPP",
-        "prepay_id":"21725138311446528"
+        "prepay_id":"21725138311446528",
+        "ratermb":"0",
+        "rateusd":"0",
+        "amountrmb":"0",
+        "amountusd":"0",
     },
     "code":"0"
 }
@@ -242,6 +246,18 @@ CT-Signature 签名方式：
 | signature | String | 是 | 签名串 |
 | out_order_id | String | 是 | 订单id |
 | status | String | 是 | 状态，不等于"0"为成功 |
+| openid | String | 是 | openid |
+| paytime | String | 是 | 支付时间 |
+| cid | String | 是 | 币种ID |
+| amount | String | 是 | 金额 |
+| attach | String | 否 | 附加信息 |
+| trade_type | String | 是 | 交易类型 |
+| action | String | 是 | 动作 |
+| info | String | 否 | 信息 |
+| ratermb | String | 否 | 下单时币种参考RMB价格 |
+| rateusd | String | 否 | 下单时币种参考USDT价格 |
+| amountrmb | String | 否 | 参考总金额RMB |
+| amountusd | String | 否 | 参考总金额USD |
 
 signature需要验签，验签方式
 
