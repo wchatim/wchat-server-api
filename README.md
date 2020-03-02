@@ -227,7 +227,7 @@ CT-Signature 签名方式：
 ```
 
 得到预下单返回结果，服务端重新生成返回参数：
-`timestamp（自主生成）` `nonce(自主生成)` `orderid（预下单返回的prepay_id）` `paySign（预下单返回的sign）` 返回客户付支付
+`timestamp（自主生成）` `nonce(自主生成)` `orderid（预下单返回的prepay_id）` `paySign（hexSHA1(mchkey+nonce+timestamp)）` 返回客户付支付
 
 ##### 3.下单回调
 请求方法：`客户服务端的回调地址`
